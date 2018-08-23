@@ -28,6 +28,30 @@ namespace OutlookCalendarExporter
 
         private void RetrieveAppointments_Click(object sender, EventArgs e)
         {
+            actionRetrieveAndUploadOutlookAppointments();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            actionRetrieveAndUploadOutlookAppointments();
+        }
+
+        private void actionRetrieveAndUploadOutlookAppointments()
+        {
+            Status.Text = "Retrieving and Uploading...";
+            try
+            {
+                retrieveAndUploadOutlookAppointments();
+                Status.Text = "Uploaded";
+                lastSuccessfulUpload.Text = DateTime.Now.ToString();
+            } catch (Exception ex)
+            {
+                Status.Text = ex.Message;
+            }
+        }
+
+        private void retrieveAndUploadOutlookAppointments()
+        {
             var appointments = OutlookAppointmentRetriever.retrieveAppointments(new DateTime(2018, 1, 1), new DateTime(2018, 12, 31));
 
             var icalString = generateIcal(appointments);
@@ -74,9 +98,7 @@ namespace OutlookCalendarExporter
             using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
             {
                 if (response.StatusCode != FtpStatusCode.ClosingData)
-                {
-                    Console.WriteLine($"Upload went wrong? {response.StatusDescription}");
-                }
+                    throw new Exception("FTP-Upload failed: " + response.StatusDescription);
             }
         }
     }

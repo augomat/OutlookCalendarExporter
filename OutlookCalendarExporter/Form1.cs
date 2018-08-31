@@ -24,11 +24,26 @@ namespace OutlookCalendarExporter
         public Form1()
         {
             InitializeComponent();
+            populateCalendarList();
+            
+            Start.Value = DateTime.Now.AddMonths(-1);
+            End.Value = DateTime.Now.AddYears(1);
+        }
+
+        private void populateCalendarList()
+        {
+            var folders = OutlookAppointmentRetriever.EnumerateCalendards();
+            foreach(var folder in folders)
+            {
+                Calendars.Items.Add(folder.Path);
+                Calendars.SetItemChecked(Calendars.Items.Count - 1, true);
+            }
         }
 
         private void RetrieveAppointments_Click(object sender, EventArgs e)
         {
             actionRetrieveAndUploadOutlookAppointments();
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -52,7 +67,13 @@ namespace OutlookCalendarExporter
 
         private void retrieveAndUploadOutlookAppointments()
         {
-            var appointments = OutlookAppointmentRetriever.retrieveAppointments(new DateTime(2018, 1, 1), new DateTime(2018, 12, 31));
+            List<String> folders = new List<string>();
+            foreach(var item in Calendars.CheckedItems)
+            {
+                folders.Add(item.ToString());
+            }
+
+            var appointments = OutlookAppointmentRetriever.retrieveAppointments(folders, Start.Value, End.Value);
 
             var icalString = generateIcal(appointments);
 

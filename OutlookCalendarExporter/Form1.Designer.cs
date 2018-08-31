@@ -35,11 +35,16 @@
             this.lastSuccessfulUpload = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Status = new System.Windows.Forms.Label();
+            this.Calendars = new System.Windows.Forms.CheckedListBox();
+            this.End = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Start = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // RetrieveAppointments
             // 
-            this.RetrieveAppointments.Location = new System.Drawing.Point(12, 12);
+            this.RetrieveAppointments.Location = new System.Drawing.Point(256, 44);
             this.RetrieveAppointments.Name = "RetrieveAppointments";
             this.RetrieveAppointments.Size = new System.Drawing.Size(122, 23);
             this.RetrieveAppointments.TabIndex = 0;
@@ -56,7 +61,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 66);
+            this.label1.Location = new System.Drawing.Point(16, 217);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 13);
             this.label1.TabIndex = 1;
@@ -65,7 +70,7 @@
             // lastSuccessfulUpload
             // 
             this.lastSuccessfulUpload.AutoSize = true;
-            this.lastSuccessfulUpload.Location = new System.Drawing.Point(140, 66);
+            this.lastSuccessfulUpload.Location = new System.Drawing.Point(140, 217);
             this.lastSuccessfulUpload.Name = "lastSuccessfulUpload";
             this.lastSuccessfulUpload.Size = new System.Drawing.Size(88, 13);
             this.lastSuccessfulUpload.TabIndex = 2;
@@ -74,7 +79,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(94, 48);
+            this.label2.Location = new System.Drawing.Point(94, 199);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 3;
@@ -83,16 +88,62 @@
             // Status
             // 
             this.Status.AutoSize = true;
-            this.Status.Location = new System.Drawing.Point(140, 48);
+            this.Status.Location = new System.Drawing.Point(140, 199);
             this.Status.Name = "Status";
             this.Status.Size = new System.Drawing.Size(0, 13);
             this.Status.TabIndex = 4;
+            // 
+            // Calendars
+            // 
+            this.Calendars.FormattingEnabled = true;
+            this.Calendars.HorizontalScrollbar = true;
+            this.Calendars.Location = new System.Drawing.Point(12, 69);
+            this.Calendars.Name = "Calendars";
+            this.Calendars.Size = new System.Drawing.Size(366, 124);
+            this.Calendars.TabIndex = 7;
+            // 
+            // End
+            // 
+            this.End.Location = new System.Drawing.Point(50, 47);
+            this.End.Name = "End";
+            this.End.Size = new System.Drawing.Size(200, 20);
+            this.End.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "End:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(32, 13);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Start:";
+            // 
+            // Start
+            // 
+            this.Start.Location = new System.Drawing.Point(50, 21);
+            this.Start.Name = "Start";
+            this.Start.Size = new System.Drawing.Size(200, 20);
+            this.Start.TabIndex = 10;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(309, 176);
+            this.ClientSize = new System.Drawing.Size(390, 246);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.Start);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.End);
+            this.Controls.Add(this.Calendars);
             this.Controls.Add(this.Status);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lastSuccessfulUpload);
@@ -113,6 +164,11 @@
         private System.Windows.Forms.Label lastSuccessfulUpload;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Status;
+        private System.Windows.Forms.CheckedListBox Calendars;
+        private System.Windows.Forms.DateTimePicker End;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker Start;
     }
 }
 

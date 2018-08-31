@@ -24,20 +24,44 @@ namespace OutlookCalendarExporter
         }
     }
 
+    class FolderInfo
+    {
+        public String Path { get; set; }
+
+        public FolderInfo(String path)
+        {
+            Path = path;
+        }
+    }
+
     class OutlookAppointmentRetriever
     {
-        public static List<AppointmentInfo> retrieveAppointments(DateTime from, DateTime to)
+
+        public static List<AppointmentInfo> retrieveAppointments(List<String> folders, DateTime from, DateTime to)
         {
-            var oApp = new Microsoft.Office.Interop.Outlook.Application();
-            Outlook.Folder calFolder = oApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar) as Outlook.Folder;
-            Outlook.Items rangeAppts = GetAppointmentsInRange(calFolder, from, to);
+            var outlookFolders = _EnumerateCalendards();
+
+            var ret = new List<AppointmentInfo>();
+            foreach (var outlookFolder in outlookFolders)
+            {
+                if (folders.Contains(outlookFolder.FolderPath))
+                {
+                    var appointmentsPerFolder = retrieveAppointments(outlookFolder, from, to);
+                    ret.AddRange(appointmentsPerFolder);
+                }
+            }
+            return ret;
+        }
+
+        public static List<AppointmentInfo> retrieveAppointments(Outlook.Folder folder, DateTime from, DateTime to)
+        {
+            Outlook.Items rangeAppts = GetAppointmentsInRange(folder, from, to);
 
             var ret = new List<AppointmentInfo>();
             if (rangeAppts != null)
             {
                 foreach (Outlook.AppointmentItem appt in rangeAppts)
                 {
-                    //MessageBox.Show("Subject: " + appt.Subject + " Start: " + appt.Start.ToString("g"));
                     ret.Add(new AppointmentInfo(appt.Start, appt.End, appt.Subject, appt.Location));
                 }
             }
@@ -66,6 +90,44 @@ namespace OutlookCalendarExporter
             catch
             {
                 return null;
+            }
+        }
+
+        
+        public static List<FolderInfo> EnumerateCalendards()
+        {
+            var calendars = _EnumerateCalendards();
+
+            var ret = new List<FolderInfo>();
+            foreach (var calendar in calendars)
+            {
+                ret.Add(new FolderInfo(calendar.FolderPath));
+            }
+            return ret;
+        }
+
+        private static List<Outlook.Folder> _EnumerateCalendards()
+        {
+            var oApp = new Microsoft.Office.Interop.Outlook.Application();
+            Outlook.Folder root = oApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar) as Outlook.Folder;
+            var folders = new List<Outlook.Folder>()
+            {
+                root
+            };
+            EnumerateFolders(root, folders);
+            return folders;
+        }
+
+        private static void EnumerateFolders(Outlook.Folder folder, List<Outlook.Folder> folders)
+        {
+            Outlook.Folders childFolders = folder.Folders;
+            if (childFolders.Count > 0)
+            {
+                foreach (Outlook.Folder childFolder in childFolders)
+                {
+                    folders.Add(childFolder);
+                    EnumerateFolders(childFolder, folders);
+                }
             }
         }
     }

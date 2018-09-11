@@ -14,13 +14,15 @@ namespace OutlookCalendarExporter
         public DateTime DatEnd { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
+        public string Description { get; set; }
 
-        public AppointmentInfo(DateTime datStart, DateTime datEnd, string name, string location)
+        public AppointmentInfo(DateTime datStart, DateTime datEnd, string name, string location = null, string description = null)
         {
             DatStart = datStart;
             DatEnd = datEnd;
             Name = name;
-            Location = location;
+            Location = location ?? "";
+            Description = description ?? "";
         }
     }
 
@@ -53,7 +55,7 @@ namespace OutlookCalendarExporter
             return ret;
         }
 
-        public static List<AppointmentInfo> retrieveAppointments(Outlook.Folder folder, DateTime from, DateTime to)
+        private static List<AppointmentInfo> retrieveAppointments(Outlook.Folder folder, DateTime from, DateTime to)
         {
             Outlook.Items rangeAppts = GetAppointmentsInRange(folder, from, to);
 
@@ -62,7 +64,7 @@ namespace OutlookCalendarExporter
             {
                 foreach (Outlook.AppointmentItem appt in rangeAppts)
                 {
-                    ret.Add(new AppointmentInfo(appt.Start, appt.End, appt.Subject, appt.Location));
+                    ret.Add(new AppointmentInfo(appt.Start, appt.End, appt.Subject, appt.Location, appt.Body));
                 }
             }
             return ret;

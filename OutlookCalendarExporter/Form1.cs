@@ -78,11 +78,13 @@ namespace OutlookCalendarExporter
             var icalString = generateIcal(appointments);
 
             uploadToFTP(icalString);
+            //writeToFile(icalString);
         }
 
         private string generateIcal(List<AppointmentInfo> appointments)
         {
             var calendar = new Ical.Net.Calendar();
+            calendar.AddTimeZone(new Ical.Net.CalendarComponents.VTimeZone("Europe/Berlin")); //bringt das was? Muss fast das ical checken...
             foreach (var appointment in appointments)
             {
                 var newEvent = new Ical.Net.CalendarComponents.CalendarEvent();
@@ -102,11 +104,9 @@ namespace OutlookCalendarExporter
 
         private void uploadToFTP(string icalString)
         {
-            // Get the object used to communicate with the server.
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + FTP_HOST + '/' + FTP_DIR + '/' + FTP_FILENAME);
             request.Method = WebRequestMethods.Ftp.UploadFile;
 
-            // This example assumes the FTP site uses anonymous logon.
             request.Credentials = new NetworkCredential(FTP_USER, FTP_PWD);
 
             using (Stream requestStream = request.GetRequestStream())
@@ -121,6 +121,11 @@ namespace OutlookCalendarExporter
                 if (response.StatusCode != FtpStatusCode.ClosingData)
                     throw new Exception("FTP-Upload failed: " + response.StatusDescription);
             }
+        }
+
+        private void writeToLocalFile(string icalString)
+        {
+            System.IO.File.WriteAllText(FTP_FILENAME, icalString);
         }
     }
 }

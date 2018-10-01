@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.RetrieveAppointments = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -40,6 +41,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Start = new System.Windows.Forms.DateTimePicker();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.NotifyIconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.MenuItemClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotifyIconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // RetrieveAppointments
@@ -134,6 +140,35 @@
             this.Start.Size = new System.Drawing.Size(200, 20);
             this.Start.TabIndex = 10;
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.NotifyIconContextMenu;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "CalendarExporter";
+            this.notifyIcon1.Visible = true;
+            // 
+            // NotifyIconContextMenu
+            // 
+            this.NotifyIconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemOpen,
+            this.MenuItemClose});
+            this.NotifyIconContextMenu.Name = "NotifyIconContextMenu";
+            this.NotifyIconContextMenu.Size = new System.Drawing.Size(104, 48);
+            // 
+            // MenuItemClose
+            // 
+            this.MenuItemClose.Name = "MenuItemClose";
+            this.MenuItemClose.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemClose.Text = "Close";
+            this.MenuItemClose.Click += new System.EventHandler(this.MenuItemClose_Click);
+            // 
+            // MenuItemOpen
+            // 
+            this.MenuItemOpen.Name = "MenuItemOpen";
+            this.MenuItemOpen.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemOpen.Text = "Open";
+            this.MenuItemOpen.Click += new System.EventHandler(this.MenuItemOpen_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -149,8 +184,11 @@
             this.Controls.Add(this.lastSuccessfulUpload);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.RetrieveAppointments);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "CalendarExporter";
+            this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.NotifyIconContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,6 +207,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker Start;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip NotifyIconContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemOpen;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemClose;
     }
 }
 

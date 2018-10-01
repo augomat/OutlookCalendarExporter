@@ -28,6 +28,12 @@ namespace OutlookCalendarExporter
             
             Start.Value = DateTime.Now.AddMonths(-1);
             End.Value = DateTime.Now.AddYears(1);
+
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Count() >= 2 && args[1] == "-minimized") {
+                this.ShowInTaskbar = false;
+                this.WindowState = FormWindowState.Minimized;
+            }
         }
 
         private void populateCalendarList()
@@ -126,6 +132,27 @@ namespace OutlookCalendarExporter
         private void writeToLocalFile(string icalString)
         {
             System.IO.File.WriteAllText(FTP_FILENAME, icalString);
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+                this.ShowInTaskbar = false;
+            }
+        }
+
+        private void MenuItemOpen_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+        }
+
+        private void MenuItemClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

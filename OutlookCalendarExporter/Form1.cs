@@ -34,6 +34,9 @@ namespace OutlookCalendarExporter
                 this.ShowInTaskbar = false;
                 this.WindowState = FormWindowState.Minimized;
             }
+
+            if (RegistryHelper.IsApplicationRegisteredForStartup())
+                autostart.Checked = true;
         }
 
         private void populateCalendarList()
@@ -153,6 +156,14 @@ namespace OutlookCalendarExporter
         private void MenuItemClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void autostart_CheckedChanged(object sender, EventArgs e)
+        {
+            if (autostart.Checked)
+                RegistryHelper.AddApplicationToStartup();
+            else
+                RegistryHelper.RemoveApplicationFromStartup();
         }
     }
 }

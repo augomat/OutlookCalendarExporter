@@ -43,8 +43,9 @@
             this.Start = new System.Windows.Forms.DateTimePicker();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.NotifyIconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.MenuItemClose = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.autostart = new System.Windows.Forms.CheckBox();
             this.NotifyIconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -155,25 +156,37 @@
             this.NotifyIconContextMenu.Name = "NotifyIconContextMenu";
             this.NotifyIconContextMenu.Size = new System.Drawing.Size(104, 48);
             // 
-            // MenuItemClose
-            // 
-            this.MenuItemClose.Name = "MenuItemClose";
-            this.MenuItemClose.Size = new System.Drawing.Size(180, 22);
-            this.MenuItemClose.Text = "Close";
-            this.MenuItemClose.Click += new System.EventHandler(this.MenuItemClose_Click);
-            // 
             // MenuItemOpen
             // 
             this.MenuItemOpen.Name = "MenuItemOpen";
-            this.MenuItemOpen.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemOpen.Size = new System.Drawing.Size(103, 22);
             this.MenuItemOpen.Text = "Open";
             this.MenuItemOpen.Click += new System.EventHandler(this.MenuItemOpen_Click);
+            // 
+            // MenuItemClose
+            // 
+            this.MenuItemClose.Name = "MenuItemClose";
+            this.MenuItemClose.Size = new System.Drawing.Size(103, 22);
+            this.MenuItemClose.Text = "Close";
+            this.MenuItemClose.Click += new System.EventHandler(this.MenuItemClose_Click);
+            // 
+            // autostart
+            // 
+            this.autostart.AutoSize = true;
+            this.autostart.Location = new System.Drawing.Point(258, 23);
+            this.autostart.Name = "autostart";
+            this.autostart.Size = new System.Drawing.Size(114, 17);
+            this.autostart.TabIndex = 12;
+            this.autostart.Text = "Start with windows";
+            this.autostart.UseVisualStyleBackColor = true;
+            this.autostart.CheckedChanged += new System.EventHandler(this.autostart_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(390, 246);
+            this.Controls.Add(this.autostart);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Start);
             this.Controls.Add(this.label3);
@@ -211,6 +224,7 @@
         private System.Windows.Forms.ContextMenuStrip NotifyIconContextMenu;
         private System.Windows.Forms.ToolStripMenuItem MenuItemOpen;
         private System.Windows.Forms.ToolStripMenuItem MenuItemClose;
+        private System.Windows.Forms.CheckBox autostart;
     }
 }
 

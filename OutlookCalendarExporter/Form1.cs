@@ -199,6 +199,7 @@ namespace OutlookCalendarExporter
         private void timer1_Tick(object sender, EventArgs e)
         {
             actionRetrieveAndUploadOutlookAppointments();
+            End.Value = DateTime.Now.AddYears(1);
         }
     }
 }

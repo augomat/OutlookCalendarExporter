@@ -15,11 +15,15 @@ namespace OutlookCalendarExporter
 {
     public partial class Form1 : Form
     {
-        private const string FTP_FILENAME = "kapeller_outlook.ics";
+        private const string FTP_FILENAME_SUFFIX = "_outlook.ics";
         private const string FTP_HOST = "files.000webhost.com";
-        private const string FTP_DIR = "public_html/icals";
+        private const string DIR = "icals";
+        private const string FTP_DIR = "public_html/" + DIR;
         private const string FTP_USER = "augomat";
         private const string FTP_PWD = "1234georgsMasterPwd!!";
+        private const string HTTP_HOST = FTP_USER + ".000webhostapp.com";
+
+        private FTPSingleFileUploader FTPUploader = new FTPSingleFileUploader();
 
         private bool firstStartup = true;
 
@@ -27,12 +31,20 @@ namespace OutlookCalendarExporter
         {
             InitializeComponent();
             populateCalendarList();
-            
+
             Start.Value = DateTime.Now.AddMonths(-1);
             End.Value = DateTime.Now.AddYears(1);
 
             if (RegistryHelper.IsApplicationRegisteredForStartup())
                 autostart.Checked = true;
+
+            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace('\\', '_');
+            string fileName = userName + FTP_FILENAME_SUFFIX;
+            FTPUploader.setFtpHostAndCredentials(FTP_HOST, FTP_USER, FTP_PWD);
+            FTPUploader.setFtpPath(FTP_DIR, fileName);
+            FTPUploader.setHttpPath("https://" + HTTP_HOST + "/" + DIR, fileName);
+
+            urlLinkLabel.Text = "";
         }
 
         private void populateCalendarList()
@@ -53,7 +65,8 @@ namespace OutlookCalendarExporter
                 retrieveAndUploadOutlookAppointments();
                 Status.Text = "Uploaded";
                 lastSuccessfulUpload.Text = DateTime.Now.ToString();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Status.Text = ex.Message;
             }
@@ -63,7 +76,7 @@ namespace OutlookCalendarExporter
         private void retrieveAndUploadOutlookAppointments()
         {
             List<String> folders = new List<string>();
-            foreach(var item in Calendars.CheckedItems)
+            foreach (var item in Calendars.CheckedItems)
             {
                 folders.Add(item.ToString());
             }
@@ -72,8 +85,10 @@ namespace OutlookCalendarExporter
 
             var icalString = generateIcal(appointments);
 
-            uploadToFTP(icalString);
-            //writeToFile(icalString);
+            FTPUploader.upload(icalString);
+            //FTPUploader.writeToFile(icalString);
+
+            urlLinkLabel.Text = "Copy link to clipboard";
         }
 
         private string generateIcal(List<AppointmentInfo> appointments)
@@ -95,32 +110,6 @@ namespace OutlookCalendarExporter
             var icalString = calendarSerializer.SerializeToString(calendar);
 
             return icalString;
-        }
-
-        private void uploadToFTP(string icalString)
-        {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + FTP_HOST + '/' + FTP_DIR + '/' + FTP_FILENAME);
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-
-            request.Credentials = new NetworkCredential(FTP_USER, FTP_PWD);
-
-            using (Stream requestStream = request.GetRequestStream())
-            {
-                System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-                byte[] icalByteArray = encoding.GetBytes(icalString);
-                requestStream.Write(icalByteArray, 0, icalString.Length);
-            }
-
-            using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
-            {
-                if (response.StatusCode != FtpStatusCode.ClosingData)
-                    throw new Exception("FTP-Upload failed: " + response.StatusDescription);
-            }
-        }
-
-        private void writeToLocalFile(string icalString)
-        {
-            System.IO.File.WriteAllText(FTP_FILENAME, icalString);
         }
 
         // ---------------------------------------------------------------------------
@@ -200,6 +189,11 @@ namespace OutlookCalendarExporter
         {
             actionRetrieveAndUploadOutlookAppointments();
             End.Value = DateTime.Now.AddYears(1);
+        }
+
+        private void urlLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Windows.Forms.Clipboard.SetDataObject(FTPUploader.getHttpLink(), true);
         }
     }
 }

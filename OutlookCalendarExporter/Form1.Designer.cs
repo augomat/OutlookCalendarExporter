@@ -46,6 +46,8 @@
             this.MenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemClose = new System.Windows.Forms.ToolStripMenuItem();
             this.autostart = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.urlLinkLabel = new System.Windows.Forms.LinkLabel();
             this.NotifyIconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -181,11 +183,33 @@
             this.autostart.UseVisualStyleBackColor = true;
             this.autostart.CheckedChanged += new System.EventHandler(this.autostart_CheckedChanged);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(101, 236);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "URL:";
+            // 
+            // urlLinkLabel
+            // 
+            this.urlLinkLabel.AutoSize = true;
+            this.urlLinkLabel.Location = new System.Drawing.Point(140, 236);
+            this.urlLinkLabel.Name = "urlLinkLabel";
+            this.urlLinkLabel.Size = new System.Drawing.Size(108, 13);
+            this.urlLinkLabel.TabIndex = 14;
+            this.urlLinkLabel.TabStop = true;
+            this.urlLinkLabel.Text = "Copy link to clipboard";
+            this.urlLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.urlLinkLabel_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 246);
+            this.ClientSize = new System.Drawing.Size(390, 267);
+            this.Controls.Add(this.urlLinkLabel);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.autostart);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Start);
@@ -226,6 +250,8 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItemOpen;
         private System.Windows.Forms.ToolStripMenuItem MenuItemClose;
         private System.Windows.Forms.CheckBox autostart;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.LinkLabel urlLinkLabel;
     }
 }
 

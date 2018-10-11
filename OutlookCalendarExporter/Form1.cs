@@ -21,6 +21,8 @@ namespace OutlookCalendarExporter
         private const string FTP_USER = "augomat";
         private const string FTP_PWD = "1234georgsMasterPwd!!";
 
+        private bool firstStartup = true;
+
         public Form1()
         {
             InitializeComponent();
@@ -29,12 +31,6 @@ namespace OutlookCalendarExporter
             Start.Value = DateTime.Now.AddMonths(-1);
             End.Value = DateTime.Now.AddYears(1);
 
-            string[] args = Environment.GetCommandLineArgs();
-            if (args.Count() >= 2 && args[1] == "-minimized") {
-                this.ShowInTaskbar = false;
-                this.WindowState = FormWindowState.Minimized;
-            }
-
             if (RegistryHelper.IsApplicationRegisteredForStartup())
                 autostart.Checked = true;
         }
@@ -42,22 +38,11 @@ namespace OutlookCalendarExporter
         private void populateCalendarList()
         {
             var folders = OutlookAppointmentRetriever.EnumerateCalendards();
-            foreach(var folder in folders)
+            foreach (var folder in folders)
             {
                 Calendars.Items.Add(folder.Path);
                 Calendars.SetItemChecked(Calendars.Items.Count - 1, true);
             }
-        }
-
-        private void RetrieveAppointments_Click(object sender, EventArgs e)
-        {
-            actionRetrieveAndUploadOutlookAppointments();
-            
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            actionRetrieveAndUploadOutlookAppointments();
         }
 
         private void actionRetrieveAndUploadOutlookAppointments()
@@ -137,20 +122,19 @@ namespace OutlookCalendarExporter
             System.IO.File.WriteAllText(FTP_FILENAME, icalString);
         }
 
+        // ---------------------------------------------------------------------------
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Minimized)
             {
-                this.Hide();
-                this.ShowInTaskbar = false;
+                hideWindow();
             }
         }
 
         private void MenuItemOpen_Click(object sender, EventArgs e)
         {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
+            showWindow();
         }
 
         private void MenuItemClose_Click(object sender, EventArgs e)
@@ -158,12 +142,53 @@ namespace OutlookCalendarExporter
             Application.Exit();
         }
 
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            showWindow();
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            if (firstStartup && args.Count() >= 2 && args[1] == "-minimized")
+            {
+                hideWindow();
+            }
+            firstStartup = false;
+        }
+
+        protected void hideWindow()
+        {
+            this.Hide();
+            notifyIcon1.Visible = true;
+        }
+
+        protected void showWindow()
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            notifyIcon1.Visible = true;
+        }
+
+        // ---------------------------------------------------------------------------
+
         private void autostart_CheckedChanged(object sender, EventArgs e)
         {
             if (autostart.Checked)
                 RegistryHelper.AddApplicationToStartup();
             else
                 RegistryHelper.RemoveApplicationFromStartup();
+        }
+
+        private void RetrieveAppointments_Click(object sender, EventArgs e)
+        {
+            actionRetrieveAndUploadOutlookAppointments();
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            actionRetrieveAndUploadOutlookAppointments();
         }
     }
 }

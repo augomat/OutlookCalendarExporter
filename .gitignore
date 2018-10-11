@@ -246,3 +246,7 @@ ModelManifest.xml
 
 # custom added
 # App.config
+
+# Installation
+SetupProject/OutlookCalendarExporter-AnyCPU_Release-SetupFiles/*
+SetupProject/OutlookCalendarExporter-cache/*

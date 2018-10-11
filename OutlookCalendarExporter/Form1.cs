@@ -57,6 +57,7 @@ namespace OutlookCalendarExporter
             {
                 Status.Text = ex.Message;
             }
+            showInfoBalloon("Status", Status.Text);
         }
 
         private void retrieveAndUploadOutlookAppointments()
@@ -168,6 +169,15 @@ namespace OutlookCalendarExporter
             this.Show();
             this.WindowState = FormWindowState.Normal;
             notifyIcon1.Visible = true;
+        }
+
+        public void showInfoBalloon(string title, string message)
+        {
+            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon1.BalloonTipText = message;
+            notifyIcon1.BalloonTipTitle = title;
+
+            notifyIcon1.ShowBalloonTip(1000);
         }
 
         // ---------------------------------------------------------------------------

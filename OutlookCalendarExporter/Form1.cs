@@ -38,8 +38,14 @@ namespace OutlookCalendarExporter
             if (RegistryHelper.IsApplicationRegisteredForStartup())
                 autostart.Checked = true;
 
-            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace('\\', '_');
-            string fileName = userName + FTP_FILENAME_SUFFIX;
+            string ExportId = RegistryHelper.GetApplicationConfigString(RegistryHelper.CONFIGKEY_EXPORT_ID);
+            if (ExportId == null || ExportId == "")
+            {
+                ExportId = Guid.NewGuid().ToString();
+                RegistryHelper.SetApplicationConfigString(RegistryHelper.CONFIGKEY_EXPORT_ID, ExportId);
+            }
+
+            string fileName = ExportId + FTP_FILENAME_SUFFIX;
             FTPUploader.setFtpHostAndCredentials(FTP_HOST, FTP_USER, FTP_PWD);
             FTPUploader.setFtpPath(FTP_DIR, fileName);
             FTPUploader.setHttpPath("https://" + HTTP_HOST + "/" + DIR, fileName);

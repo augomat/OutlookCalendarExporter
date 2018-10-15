@@ -10,6 +10,8 @@ namespace OutlookCalendarExporter
 {
     class RegistryHelper
     {
+        public const string CONFIGKEY_EXPORT_ID = "ExportId";
+
         public static void AddApplicationToStartup()
         {
             var programName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
@@ -38,6 +40,20 @@ namespace OutlookCalendarExporter
                 else
                     return true;
             }
+        }
+
+        public static void SetApplicationConfigString(string key, string value)
+        {
+            Application.UserAppDataRegistry.SetValue(key, value);
+        }
+
+        public static string GetApplicationConfigString(string key)
+        {
+            var regkey = Application.UserAppDataRegistry.GetValue(key);
+            if (regkey != null)
+                return regkey.ToString();
+            else
+                return "";
         }
     }
 }

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OutlookCalendarExporter")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("KNAPP Systemintegration GmbH")]
+[assembly: AssemblyCompany("KPT")]
 [assembly: AssemblyProduct("OutlookCalendarExporter")]
-[assembly: AssemblyCopyright("Copyright © KNAPP Systemintegration GmbH 2018")]
+[assembly: AssemblyCopyright("Copyright © KPT")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

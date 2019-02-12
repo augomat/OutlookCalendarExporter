@@ -85,7 +85,7 @@ namespace OutlookCalendarExporter
         /*
          * Just for testing
          */
-        private void writeToLocalFile(string icalString)
+        public void writeToLocalFile(string icalString)
         {
             System.IO.File.WriteAllText(Filename, icalString);
         }

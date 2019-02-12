@@ -64,7 +64,8 @@ namespace OutlookCalendarExporter
             {
                 foreach (Outlook.AppointmentItem appt in rangeAppts)
                 {
-                    ret.Add(new AppointmentInfo(appt.Start, appt.End, appt.Subject, appt.Location, appt.Body));
+                    if (DateTime.Compare(appt.Start, appt.End) != 0) //exclude "task"/"reminders" as I am not reminded in this calendar anyways
+                        ret.Add(new AppointmentInfo(appt.Start, appt.End, appt.Subject, appt.Location, appt.Body));
                 }
             }
             return ret;

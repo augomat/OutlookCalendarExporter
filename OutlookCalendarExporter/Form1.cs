@@ -51,6 +51,8 @@ namespace OutlookCalendarExporter
             FTPUploader.setHttpPath("https://" + HTTP_HOST + "/" + DIR, fileName);
 
             urlLinkLabel.Text = "";
+
+            //this.Load += //tryout where an exception is shown....
         }
 
         private void populateCalendarList()
@@ -75,8 +77,8 @@ namespace OutlookCalendarExporter
             catch (Exception ex)
             {
                 Status.Text = ex.Message;
+                showInfoBalloon("Error", Status.Text);
             }
-            showInfoBalloon("Status", Status.Text);
         }
 
         private void retrieveAndUploadOutlookAppointments()
@@ -92,7 +94,7 @@ namespace OutlookCalendarExporter
             var icalString = generateIcal(appointments);
 
             FTPUploader.upload(icalString);
-            //FTPUploader.writeToFile(icalString);
+            //FTPUploader.writeToLocalFile(icalString);
 
             urlLinkLabel.Text = "Copy link to clipboard";
         }
@@ -108,6 +110,7 @@ namespace OutlookCalendarExporter
                 newEvent.Location = appointment.Location;
                 newEvent.Start = new Ical.Net.DataTypes.CalDateTime(appointment.DatStart);
                 newEvent.End = new Ical.Net.DataTypes.CalDateTime(appointment.DatEnd);
+                newEvent.Description = appointment.Description;
 
                 calendar.Events.Add(newEvent);
             }

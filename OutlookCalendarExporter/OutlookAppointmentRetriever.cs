@@ -24,6 +24,11 @@ namespace OutlookCalendarExporter
             Location = location ?? "";
             Description = description ?? "";
         }
+
+        public override String ToString()
+        {
+            return "[" + DatStart + " - " + DatEnd + "] " + Name;
+        }
     }
 
     class FolderInfo
@@ -64,8 +69,13 @@ namespace OutlookCalendarExporter
             {
                 foreach (Outlook.AppointmentItem appt in rangeAppts)
                 {
-                    if (DateTime.Compare(appt.Start, appt.End) != 0) //exclude "task"/"reminders" as I am not reminded in this calendar anyways
-                        ret.Add(new AppointmentInfo(appt.Start, appt.End, appt.Subject, appt.Location, appt.Body));
+                    //exclude "task"/"reminders" as I am not reminded in this calendar anyways
+                    if (DateTime.Compare(appt.Start, appt.End) != 0)
+                    {
+                        var appointmentInfo = new AppointmentInfo(appt.Start, appt.End, appt.Subject, appt.Location, appt.Body);
+                        ret.Add(appointmentInfo);
+                        Console.WriteLine(appointmentInfo);
+                    }
                 }
             }
             return ret;

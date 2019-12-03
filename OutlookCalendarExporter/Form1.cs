@@ -76,6 +76,7 @@ namespace OutlookCalendarExporter
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 Status.Text = ex.Message;
                 showInfoBalloon("Error", Status.Text);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,6 +52,8 @@ namespace OutlookCalendarExporter
             if (!isConfigurationSufficient())
                 throw new Exception("Configuration of FTP-Uploader is not sufficient");
 
+            CheckHostAvailability(Host);
+
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + Host + '/' + Directory + '/' + Filename);
             request.Method = WebRequestMethods.Ftp.UploadFile;
 
@@ -70,12 +73,14 @@ namespace OutlookCalendarExporter
             }
         }
 
+        public void CheckHostAvailability(String Host)
+        {
+            var pinger = new Ping();
+            var reply = pinger.Send(Host);
 
-        private const string FTP_FILENAME = "_outlook.ics";
-        private const string FTP_HOST = "files.000webhost.com";
-        private const string FTP_DIR = "public_html/icals";
-        private const string FTP_USER = "augomat";
-        private const string FTP_PWD = "1234georgsMasterPwd!!";
+            if (reply.Status != IPStatus.Success)
+                throw new Exception("Host unreachable");
+        }
 
         public string getHttpLink()
         {

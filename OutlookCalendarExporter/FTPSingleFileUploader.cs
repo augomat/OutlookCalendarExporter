@@ -52,7 +52,7 @@ namespace OutlookCalendarExporter
             if (!isConfigurationSufficient())
                 throw new Exception("Configuration of FTP-Uploader is not sufficient");
 
-            CheckHostAvailability(Host);
+            //CheckHostAvailability(Host);
 
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + Host + '/' + Directory + '/' + Filename);
             request.Method = WebRequestMethods.Ftp.UploadFile;
